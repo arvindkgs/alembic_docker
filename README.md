@@ -1,6 +1,6 @@
 # Alembic tools for DB
 
-Alembic command requires a predefined folder structure which is created on running 'alembic init <dir>'. This creates unnecessary overhead. This repo provides scripts that creates the folder structure in dockerfile and runs alembic as a docker container, thereby it is not necessary to have any directory structure
+Alembic command requires a predefined folder structure which is created on running 'alembic init [dir]'. This creates unnecessary overhead. This repo provides scripts that creates the folder structure in dockerfile and runs alembic as a docker container, thereby it is not necessary to have any directory structure
 
 *** Prerequisite ***
 1. Docker (18.09 or higher)
@@ -11,7 +11,7 @@ Alembic command requires a predefined folder structure which is created on runni
 These tools can be used to run alembic commands and create new migration scripts.
 
 ## Run alembic commands
-`$ /path/to/db-tools/run_alembic.sh <cmd>`
+`$ /path/to/db-tools/run_alembic.sh [cmd]`
 
 ### Different alembic commands
     1. heads (current head)
@@ -22,7 +22,7 @@ These tools can be used to run alembic commands and create new migration scripts
 ## Create migration scripts - 
 ** This will push the generated script to ./schema/alembic/versions **
 
-`$ /path/to/db-tools/create_migrations.sh <script-name>`
+`$ /path/to/db-tools/create_migrations.sh [script-name]`
 
 ### Configuration
 1. Default values are
