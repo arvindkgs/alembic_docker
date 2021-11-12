@@ -32,6 +32,7 @@ These tools can be used to run alembic commands and create new migration scripts
     * DB_NAME=root
     * DB_NETWORK=bridge (this is useful if you are running mysql in a docker container)
     * DB_PORT=3306
+    * VERSIONS_DIR=./schema/alembic/versions
     
 
 To change the values and run commands, set as 
