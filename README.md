@@ -1,4 +1,4 @@
-# Alembic tools for DB
+# Alembic docker scripts
 
 Alembic command requires a predefined folder structure which is created on running `alembic init [dir]`. This creates unnecessary overhead. This repo provides scripts that creates the folder structure in dockerfile and runs alembic as a docker container, thereby it is not necessary to have any directory structure
 
