@@ -19,7 +19,7 @@ These tools can be used to run alembic commands and create new migration scripts
     3. history (displays the sequence of migrations that ran)
     for more commands `$ /path/to/alembic_docker/run_alembic.sh -h`
 
-## Create migration scripts - 
+## Create migration scripts  
 ** This will push the generated script to ./schema/alembic/versions **
 
 `$ /path/to/alembic_docker/create_migrations.sh [script-name]`
