@@ -161,7 +161,7 @@ DOCKER_BUILDKIT=1 docker build --rm -q -t alembic:latest -f Dockerfilealembicdoc
 # start alembic container
 docker run -it -d --name alembic alembic sh > /dev/null
 # create new migration script and copy to schema/alembic/versions
-docker exec -it alembic alembic -c schema/alembic.ini revision -m "$1" | tee /dev/tty  | docker cp alembic:$(cut -d' ' -f2) schema/alembic/versions/
+docker exec -it alembic alembic -c schema/alembic.ini revision -m "$1" | tee /dev/tty  | docker cp alembic:$(cut -d' ' -f2) ${VERSIONS_DIR:-schema/alembic/versions}
 # stop alembic container
 docker rm -f alembic > /dev/null
 rm "$tmpfile"
