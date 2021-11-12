@@ -24,7 +24,7 @@ These tools can be used to run alembic commands and create new migration scripts
 
 `$ /path/to/alembic_docker/create_migrations.sh [script-name]`
 
-### Configuration
+## Configuration
 1. Default values are
     * DB_USERNAME=root
     * DB_PASSWORD=password
