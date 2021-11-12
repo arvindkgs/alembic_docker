@@ -39,11 +39,11 @@ To change the values and run commands, set as
 `$ DB_HOST=localhost DB_USERNAME=root DB_PASSWORD=password /path/to/db-tools/run_alembic.sh upgrade head`
 
 ## TIPS
-### You can set environment variables permanently in `.bashrc` as
+1. You can set environment variables permanently in `.bashrc` as
     ```
     export DB_USERNAME='user'
     export DB_PASSWORD='password'
     export DB_HOST='localhost'
     export DB_NAME='root'
     ```
-### Add above scripts to the PATH as `export PATH=$PATH:/path/to/db-tools`
+2. Add above scripts to the PATH as `export PATH=$PATH:/path/to/db-tools`
