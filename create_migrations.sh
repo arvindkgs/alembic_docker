@@ -5,8 +5,8 @@ if [[ $# -lt 1 ]]; then
   exit 0
 fi
 rm Dockerfilealembicdockerfile > /dev/null 2>&1
-tmpfile=$(mktemp Dockerfilealembicdockerfile)
-exec 3>"$tmpfile"
+touch Dockerfilealembicdockerfile
+exec 3>"Dockerfilealembicdockerfile"
 cat <<EOFD >&3
 # syntax = docker/dockerfile:1.3-labs
 FROM alpine:3.14
@@ -28,11 +28,11 @@ RUN INCUBATOR_VER=\${INCUBATOR_VER}
 
 # Create alembic files
 RUN mkdir -p /opt/schema/versions
-ARG DB_USERNAME=root
+ARG DB_USERNAME=nile
 ARG DB_PASSWORD=password
 ARG DB_HOST=mysql
 ARG VERSIONS_DIR=schema/alembic/versions
-ARG DB_NAME=root
+ARG DB_NAME=nile
 ARG DB_PORT=3306
 ADD \${VERSIONS_DIR} /opt/schema/versions
 
@@ -157,11 +157,11 @@ fi
 # delete image
 docker image rm -f alembic > /dev/null 2>&1 && \
 # rebuild image
-DOCKER_BUILDKIT=1 docker build --rm -q -t alembic:latest -f Dockerfilealembicdockerfile --build-arg DB_HOST=${DB_HOST:-mysql} --build-arg DB_PASSWORD=${DB_PASSWORD:-password} --build-arg DB_USERNAME=${DB_USERNAME:-root} --build-arg DB_NAME=${DB_NAME:-root} --build-arg DB_PORT=${DB_PORT:-3306} --build-arg VERSIONS_DIR=${VERSIONS_DIR:-schema/alembic/versions} --build-arg INCUBATOR_VER=$(date +%Y%m%d-%H%M%S) . > /dev/null 2>&1
+DOCKER_BUILDKIT=1 docker build --rm -q -t alembic:latest -f Dockerfilealembicdockerfile --build-arg DB_HOST=${DB_HOST:-mysql} --build-arg DB_PASSWORD=${DB_PASSWORD:-password} --build-arg DB_USERNAME=${DB_USERNAME:-nile} --build-arg DB_NAME=${DB_NAME:-nile} --build-arg DB_PORT=${DB_PORT:-3306} --build-arg VERSIONS_DIR=${VERSIONS_DIR:-schema/alembic/versions} --build-arg INCUBATOR_VER=$(date +%Y%m%d-%H%M%S) . > /dev/null 2>&1
 # start alembic container
 docker run -it -d --name alembic alembic sh > /dev/null
 # create new migration script and copy to schema/alembic/versions
-docker exec -it alembic alembic -c schema/alembic.ini revision -m "$1" | tee /dev/tty  | docker cp alembic:$(cut -d' ' -f2) ${VERSIONS_DIR:-schema/alembic/versions}
+docker exec -it alembic alembic -c schema/alembic.ini revision -m "$1" | tee /dev/tty  | docker cp alembic:$(cut -d' ' -f2) schema/alembic/versions/
 # stop alembic container
 docker rm -f alembic > /dev/null
-rm "$tmpfile"
+rm "Dockerfilealembicdockerfile"

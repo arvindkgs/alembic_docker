@@ -5,7 +5,23 @@ if [[ $# -lt 1 ]]; then
   exit 1
 fi
 if [[ "$DB_HOST" == "localhost" ]]; then
-    DB_HOST="host.docker.internal"
+    unameOut="$(uname -s)"
+    case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN:${unameOut}"
+    esac
+    echo "Detected ${machine}"
+    if [[ "${machine}" == "Mac" ]]; then
+        DB_HOST="host.docker.internal"
+        DB_NETWORK="bridge"
+    elif [[ "${machine}" == "Linux" ]]; then
+        DB_HOST="localhost"
+        DB_NETWORK="host"
+    fi
+
 fi
 if [[ ! -d schema ]]; then
     echo 'Current directory does not contain schema/alembic/versions. Change PWD to folder containing schema/alembic/versions.'
