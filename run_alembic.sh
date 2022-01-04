@@ -2,10 +2,14 @@
 
 if [[ $# -lt 1 ]]; then
   echo 'Usage: run_alembic.sh "CMD"'
-  exit 0
+  exit 1
 fi
 if [[ "$DB_HOST" == "localhost" ]]; then
     DB_HOST="host.docker.internal"
+fi
+if [[ ! -d schema ]]; then
+    echo 'Current directory does not contain schema/alembic/versions. Change PWD to folder containing schema/alembic/versions.'
+    exit 1
 fi
 echo Running "$@"
 rm Dockerfilealembicdockerfile > /dev/null 2>&1
@@ -154,6 +158,6 @@ WORKDIR /opt
 ENTRYPOINT ["alembic", "-c","schema/alembic.ini"]
 EOFD
 docker image rm -f alembic > /dev/null 2>&1 && \
-DOCKER_BUILDKIT=1 docker build --rm -q -t alembic:latest -f Dockerfilealembicdockerfile --build-arg DB_HOST=${DB_HOST:-mysql} --build-arg DB_PASSWORD=${DB_PASSWORD:-password} --build-arg DB_NAME=${DB_NAME:-root} --build-arg DB_USERNAME=${DB_USERNAME:-root} --build-arg DB_PORT=${DB_PORT:-3306}  --build-arg VERSIONS_DIR=${VERSIONS_DIR:-schema/alembic/versions} --build-arg INCUBATOR_VER=$(date +%Y%m%d-%H%M%S) . > /dev/null 2>&1 && \
-docker run --network ${DB_NETWORK:-bridge} -it --rm alembic "$@"
+DOCKER_BUILDKIT=1 docker build --rm -q -t alembic:latest -f Dockerfilealembicdockerfile --build-arg DB_HOST=${DB_HOST:-mysql} --build-arg DB_PASSWORD=${DB_PASSWORD:-password} --build-arg DB_NAME=${DB_NAME:-nile} --build-arg DB_USERNAME=${DB_USERNAME:-nile} --build-arg DB_PORT=${DB_PORT:-3306}  --build-arg VERSIONS_DIR=${VERSIONS_DIR:-schema/alembic/versions} --build-arg INCUBATOR_VER=$(date +%Y%m%d-%H%M%S) . > /dev/null 2>&1 && \
+docker run --network ${DB_NETWORK:-bridge} -it --rm alembic $@
 rm "$tmpfile"
